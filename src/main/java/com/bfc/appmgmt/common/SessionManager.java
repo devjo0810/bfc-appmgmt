@@ -1,5 +1,6 @@
 package com.bfc.appmgmt.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,15 +17,18 @@ import java.util.stream.Collectors;
  * description    :
  */
 @Component
+@Slf4j
 public class SessionManager {
     private Map<String, Long> sessionMap = new HashMap<>();
 
     public boolean isLogin(String key) {
         Long memberId = sessionMap.get(key);
+        log.info("### isLogin member id : {}", memberId);
         return memberId == null ? false : true;
     }
 
     public void logout(String key) {
+        log.info("### logout member id : {}", sessionMap.get(key));
         sessionMap.remove(key);
     }
 
@@ -33,11 +37,13 @@ public class SessionManager {
                 .filter(entry -> entry.getValue().equals(memberId))
                 .map(entry -> entry.getKey())
                 .collect(Collectors.toList());
+        log.info("### login before key list... memberId : {}, keys : {}", memberId, loginSessions);
         for (String sessionKey : loginSessions) {
             sessionMap.remove(sessionKey);
         }
         String key = UUID.randomUUID().toString();
         sessionMap.put(key, memberId);
+        log.info("### login after key memberId : {}, key : {}", memberId, key);
         return key;
     }
 }

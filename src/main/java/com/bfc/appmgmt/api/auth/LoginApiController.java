@@ -5,6 +5,7 @@ import com.bfc.appmgmt.service.MemberService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotEmpty;
@@ -23,8 +24,9 @@ public class LoginApiController {
     private final MemberService memberService;
 
     @PostMapping("/api/auth/v1/login")
-    public ApiResponse loginV1(LoginRequest loginRequest) {
-        return null;
+    public ApiResponse loginV1(@RequestBody LoginRequest loginRequest) {
+        String authKey = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return ApiResponse.builder().content(authKey).build();
     }
 
     @Data
