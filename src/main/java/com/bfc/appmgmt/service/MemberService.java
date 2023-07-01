@@ -1,13 +1,19 @@
 package com.bfc.appmgmt.service;
 
 import com.bfc.appmgmt.domain.Member;
+import com.bfc.appmgmt.exception.PasswordNotMatchException;
 import com.bfc.appmgmt.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * packageName    : com.bfc.appmgmt.service
@@ -40,6 +46,16 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
         return member.getId();
+    }
+
+    public String login(String email, String password) {
+        Member member = Optional.of(memberRepository.findByEmail(email))
+                .orElseThrow(() -> new EntityNotFoundException());
+        boolean passwordMatch = isPasswordMatch(member.getId(), password);
+        if (passwordMatch == false) {
+            throw new PasswordNotMatchException("비밀번호가 일치하지 않습니다.");
+        }
+        return UUID.randomUUID().toString();
     }
 
     private void validateDuplicationEmail(String email) {
