@@ -23,7 +23,7 @@ import javax.validation.constraints.NotEmpty;
 public class JoinApiController {
     private final MemberService memberService;
 
-    @PostMapping("/api/auth/v1/join")
+    @PostMapping("/auth/join")
     public ApiResponse join(@RequestBody JoinRequest joinRequest) {
         Long joinId = memberService.join(joinRequest.getName(), joinRequest.getEmail(), joinRequest.getPassword());
         return ApiResponse.builder()

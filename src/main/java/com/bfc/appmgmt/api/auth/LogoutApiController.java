@@ -22,7 +22,7 @@ import java.util.List;
 public class LogoutApiController {
     private final SessionManager sessionManager;
 
-    @PostMapping("/api/auth/logout")
+    @PostMapping("/auth/logout")
     public ResponseEntity logout(@RequestHeader HttpHeaders httpHeaders) {
         String authKey = httpHeaders.get(HttpHeaders.AUTHORIZATION)
                 .stream().findFirst().get();

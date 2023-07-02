@@ -23,8 +23,8 @@ public class LoginApiController {
 
     private final MemberService memberService;
 
-    @PostMapping("/api/auth/v1/login")
-    public ApiResponse loginV1(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("/auth/login")
+    public ApiResponse login(@RequestBody LoginRequest loginRequest) {
         String authKey = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ApiResponse.builder().content(authKey).build();
     }
