@@ -54,7 +54,7 @@ public class MemberService {
      * @return login key
      */
     public String login(String email, String password) {
-        Member member = Optional.of(memberRepository.findByEmail(email))
+        Member member = Optional.ofNullable(memberRepository.findByEmail(email))
                 .orElseThrow(() -> new EntityNotFoundException("일치하지 않는 이메일입니다."));
         boolean passwordMatch = isPasswordMatch(member.getId(), password);
         if (passwordMatch == false) {

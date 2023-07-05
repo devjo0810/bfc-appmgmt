@@ -17,5 +17,6 @@ public class ErrorResponse {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Object content;
     private String message;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String code;
 }
