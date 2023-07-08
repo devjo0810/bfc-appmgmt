@@ -38,12 +38,15 @@ public class SessionManager {
                 .map(entry -> entry.getKey())
                 .collect(Collectors.toList());
         log.info("### login before key list... memberId : {}, keys : {}", memberId, loginSessions);
-        for (String sessionKey : loginSessions) {
-            sessionMap.remove(sessionKey);
-        }
+        loginSessions.forEach(sessionKey -> sessionMap.remove(sessionKey));
+
         String key = UUID.randomUUID().toString();
         sessionMap.put(key, memberId);
         log.info("### login after key memberId : {}, key : {}", memberId, key);
         return key;
+    }
+
+    public Long getMemberId(String authKey) {
+        return sessionMap.get(authKey);
     }
 }

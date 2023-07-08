@@ -21,7 +21,7 @@ public class ChecklistApiController {
     @GetMapping("/api/v1/checklist")
     public ApiResponse getChecklistV1() {
         return ApiResponse.builder()
-                .content(List.of("item1", "item2", "item3"))
+                .contents(List.of("item1", "item2", "item3"))
                 .build();
     }
 }

@@ -13,5 +13,5 @@ import lombok.Data;
 @Data
 @Builder
 public class ApiResponse {
-    private Object content;
+    private Object contents;
 }

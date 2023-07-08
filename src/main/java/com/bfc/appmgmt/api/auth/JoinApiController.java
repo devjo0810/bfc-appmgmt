@@ -28,7 +28,7 @@ public class JoinApiController {
     public ApiResponse join(@RequestBody @Valid JoinRequest joinRequest) {
         Long joinId = memberService.join(joinRequest.getName(), joinRequest.getEmail(), joinRequest.getPassword());
         return ApiResponse.builder()
-                .content(joinId)
+                .contents(joinId)
                 .build();
     }
 

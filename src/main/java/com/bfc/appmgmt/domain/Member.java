@@ -1,8 +1,11 @@
 package com.bfc.appmgmt.domain;
 
+import com.bfc.appmgmt.api.auth.MeApiController;
 import lombok.*;
 
 import javax.persistence.*;
+
+import static com.bfc.appmgmt.api.auth.MeApiController.*;
 
 /**
  * packageName    : com.bfc.appmgmt.domain
@@ -28,5 +31,13 @@ public class Member extends BaseTimeEntity {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public MeResponse toMeResponse() {
+        return MeResponse.builder()
+                .memberId(id)
+                .name(username)
+                .email(email)
+                .build();
     }
 }

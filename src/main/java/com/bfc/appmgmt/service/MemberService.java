@@ -3,6 +3,7 @@ package com.bfc.appmgmt.service;
 import com.bfc.appmgmt.common.SessionManager;
 import com.bfc.appmgmt.domain.Member;
 import com.bfc.appmgmt.exception.PasswordNotMatchException;
+import com.bfc.appmgmt.exception.UnauthorizedException;
 import com.bfc.appmgmt.repository.MemberRepository;
 import com.bfc.appmgmt.util.EncodeUtil;
 import lombok.RequiredArgsConstructor;
@@ -80,5 +81,12 @@ public class MemberService {
         Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new EmptyResultDataAccessException("찾을 수 없는 회원입니다.", 1));
         return EncodeUtil.matches(password, findMember.getPassword());
+    }
+
+    public Member findByAuthKey(String authKey) {
+        Long memberId = Optional.ofNullable(sessionManager.getMemberId(authKey))
+                .orElseThrow(() -> new UnauthorizedException());
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("찾을 수 없는 회원입니다."));
     }
 }

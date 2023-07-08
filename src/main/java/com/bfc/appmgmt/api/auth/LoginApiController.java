@@ -29,7 +29,7 @@ public class LoginApiController {
     public ApiResponse login(@RequestBody @Valid LoginRequest loginRequest) {
         String authKey = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ApiResponse.builder()
-                .content(LoginResponse.builder().authKey(authKey).build())
+                .contents(LoginResponse.builder().authKey(authKey).build())
                 .build();
     }
 
