@@ -1,6 +1,5 @@
 package com.bfc.appmgmt.config;
 
-import com.bfc.appmgmt.common.SessionManager;
 import com.bfc.appmgmt.interceptor.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

@@ -31,7 +31,12 @@ public class Checklist extends BaseTimeEntity {
     private List<ChecklistItem> checklistItems = new ArrayList<>();
 
     @Builder
-    public Checklist(String title) {
+    public Checklist(String title, Member member) {
+        this.title = title;
+        this.member =member;
+    }
+
+    public void updateTitle(String title) {
         this.title = title;
     }
 }
