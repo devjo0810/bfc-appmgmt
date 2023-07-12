@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "ce7cefa2-ab45-44da-93cb-97440251296b",
+		"name": "bfc-appmgmt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "로그인",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test1@test.com\",\n    \"password\": \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원가입",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test3\",\n    \"email\": \"tes3@test.com\",\n    \"password\": \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/join",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "로그아웃",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, function (error, response) {",
+									"  if (error) {",
+									"    console.error('Error:', error);",
+									"  } else {",
+									"    const authKey = response.json().contents.authKey;",
+									"    pm.variables.set(\"authKey\", authKey);",
+									"  }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "로그인 회원 정보 조회",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, function (error, response) {",
+									"  if (error) {",
+									"    console.error('Error:', error);",
+									"  } else {",
+									"    const authKey = response.json().contents.authKey;",
+									"    pm.variables.set(\"authKey\", authKey);",
+									"  }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "checklist",
+			"item": [
+				{
+					"name": "체크리스트 조회",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, function (error, response) {",
+									"  if (error) {",
+									"    console.error('Error:', error);",
+									"  } else {",
+									"    const authKey = response.json().contents.authKey;",
+									"    pm.variables.set(\"authKey\", authKey);",
+									"  }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/checklist",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"checklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "체크리스트 생성",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, function (error, response) {",
+									"  if (error) {",
+									"    console.error('Error:', error);",
+									"  } else {",
+									"    const authKey = response.json().contents.authKey;",
+									"    pm.variables.set(\"authKey\", authKey);",
+									"  }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"checklist_title1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/checklist",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"checklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "체크리스트 수정",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, loginHandler);",
+									"",
+									"function loginHandler(error, response) {",
+									"    if (error) {",
+									"        console.error('Error:', error);",
+									"    } else {",
+									"        const authKey = response.json().contents.authKey;",
+									"        pm.variables.set(\"authKey\", authKey);",
+									"",
+									"        pm.sendRequest({",
+									"            method: 'POST',",
+									"            url: `${host}/api/checklist`,",
+									"            header: {",
+									"                'Content-Type': 'application/json',",
+									"                'Authorization': authKey",
+									"            },",
+									"            body: JSON.stringify({ ",
+									"                'title': 'checklist_title'",
+									"            })",
+									"        }, createChecklistHandler);",
+									"    }",
+									"}",
+									"",
+									"function createChecklistHandler(error, response) {",
+									"    if (error) {",
+									"        console.error('Error:', error);",
+									"    } else {",
+									"        const checklistId = response.json().contents;",
+									"        pm.variables.set(\"checklist_id\", checklistId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"checklist_update_title\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/checklist/{{checklist_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"checklist",
+								"{{checklist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "체크리스트 삭제",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get(\"host\");",
+									"const email = pm.environment.get(\"member_email\");",
+									"const password = pm.environment.get(\"member_password\");",
+									"const loginUri = pm.environment.get(\"login_uri\");",
+									"",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: `${host}${loginUri}`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: JSON.stringify({ email, password })",
+									"}, loginHandler);",
+									"",
+									"function loginHandler(error, response) {",
+									"    if (error) {",
+									"        console.error('Error:', error);",
+									"    } else {",
+									"        const authKey = response.json().contents.authKey;",
+									"        pm.variables.set(\"authKey\", authKey);",
+									"",
+									"        pm.sendRequest({",
+									"            method: 'POST',",
+									"            url: `${host}/api/checklist`,",
+									"            header: {",
+									"                'Content-Type': 'application/json',",
+									"                'Authorization': authKey",
+									"            },",
+									"            body: JSON.stringify({ ",
+									"                'title': 'checklist_title'",
+									"            })",
+									"        }, createChecklistHandler);",
+									"    }",
+									"}",
+									"",
+									"function createChecklistHandler(error, response) {",
+									"    if (error) {",
+									"        console.error('Error:', error);",
+									"    } else {",
+									"        const checklistId = response.json().contents;",
+									"        pm.variables.set(\"checklist_id\", checklistId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authKey}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/checklist/{{checklist_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"checklist",
+								"{{checklist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
