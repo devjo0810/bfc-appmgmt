@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * packageName    : com.bfc.appmgmt.api.checklist
  * fileName       : ChecklistApiController
@@ -30,7 +32,7 @@ public class ChecklistApiController {
 
     @PostMapping("/api/checklist")
     public ApiResponse createChecklist(@RequestHeader HttpHeaders httpHeaders,
-                                       @RequestBody SaveChecklistRequest saveChecklistRequest) {
+                                       @RequestBody @Valid SaveChecklistRequest saveChecklistRequest) {
         String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
         Long checklistId = checklistService.createChecklist(authKey, saveChecklistRequest.getTitle());
         return ApiResponse.builder()
@@ -41,7 +43,7 @@ public class ChecklistApiController {
     @PutMapping("/api/checklist/{checklistId}")
     public ApiResponse updateChecklist(@RequestHeader HttpHeaders httpHeaders,
                                        @PathVariable(required = true, name = "checklistId") Long checklistId,
-                                       @RequestBody SaveChecklistRequest saveChecklistRequest) {
+                                       @RequestBody @Valid SaveChecklistRequest saveChecklistRequest) {
         String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
         Long updateChecklistId = checklistService.updateChecklist(authKey, checklistId, saveChecklistRequest.getTitle());
         return ApiResponse.builder()
