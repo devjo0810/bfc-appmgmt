@@ -23,17 +23,15 @@ import javax.validation.Valid;
 public class ChecklistApiController {
     private final ChecklistService checklistService;
     @GetMapping("/api/checklist")
-    public ApiResponse getChecklistV1(@RequestHeader HttpHeaders httpHeaders) {
-        String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
+    public ApiResponse getChecklistV1(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey) {
         return ApiResponse.builder()
                 .contents(checklistService.searchChecklist(authKey))
                 .build();
     }
 
     @PostMapping("/api/checklist")
-    public ApiResponse createChecklist(@RequestHeader HttpHeaders httpHeaders,
+    public ApiResponse createChecklist(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
                                        @RequestBody @Valid SaveChecklistRequest saveChecklistRequest) {
-        String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
         Long checklistId = checklistService.createChecklist(authKey, saveChecklistRequest.getTitle());
         return ApiResponse.builder()
                 .contents(checklistId)
@@ -41,10 +39,9 @@ public class ChecklistApiController {
     }
 
     @PutMapping("/api/checklist/{checklistId}")
-    public ApiResponse updateChecklist(@RequestHeader HttpHeaders httpHeaders,
+    public ApiResponse updateChecklist(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
                                        @PathVariable(required = true, name = "checklistId") Long checklistId,
                                        @RequestBody @Valid SaveChecklistRequest saveChecklistRequest) {
-        String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
         Long updateChecklistId = checklistService.updateChecklist(authKey, checklistId, saveChecklistRequest.getTitle());
         return ApiResponse.builder()
                 .contents(updateChecklistId)
@@ -52,9 +49,8 @@ public class ChecklistApiController {
     }
 
     @DeleteMapping("/api/checklist/{checklistId}")
-    public ApiResponse deleteChecklist(@RequestHeader HttpHeaders httpHeaders,
+    public ApiResponse deleteChecklist(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
                                        @PathVariable(required = true, name = "checklistId") Long checklistId) {
-        String authKey = HttpHeaderUtil.getAuthKey(httpHeaders);
         Long deleteChecklistId = checklistService.deleteChecklist(authKey, checklistId);
         return ApiResponse.builder()
                 .contents(deleteChecklistId)
