@@ -48,15 +48,18 @@ public class ChecklistItemService {
     }
 
     private void updateItem(SaveChecklistItemDto item) {
-        ChecklistItem findItem = checklistItemRepository.findById(item.getChecklistItemId())
+        ChecklistItem findChecklistItem = checklistItemRepository.findById(item.getChecklistItemId())
                 .orElseThrow(() -> new EntityNotFoundException("찾을 수 없는 체크리스트 항목입니다."));
-        findItem.update(item);
+        findChecklistItem.update(item);
     }
 
     private int updateItems(List<SaveChecklistItemDto> items) {
         List<SaveChecklistItemDto> updateItems = items.stream()
                 .filter(SaveChecklistItemDto::isUpdate)
                 .collect(Collectors.toList());
+        checklistItemRepository.findAllByIdIn(updateItems.stream()
+                .map(SaveChecklistItemDto::getChecklistItemId)
+                .collect(Collectors.toList()));
         updateItems.forEach(item -> updateItem(item));
         return updateItems.size();
     }

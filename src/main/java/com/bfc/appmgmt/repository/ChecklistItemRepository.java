@@ -3,6 +3,8 @@ package com.bfc.appmgmt.repository;
 import com.bfc.appmgmt.domain.ChecklistItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName    : com.bfc.appmgmt.repository
  * fileName       : ChecklistItemRepository
@@ -11,4 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * description    :
  */
 public interface ChecklistItemRepository extends JpaRepository<ChecklistItem, Long> {
+    List<ChecklistItem> findAllByIdIn(List<Long> ids);
 }
