@@ -1,6 +1,8 @@
 package com.bfc.appmgmt.domain;
 
+import com.bfc.appmgmt.api.checklist.dto.SaveChecklistItemDto;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +32,23 @@ public class ChecklistItem extends BaseTimeEntity {
     @JoinColumn(name = "checklist_id")
     private Checklist checklist;
 
+    @Builder
+    public ChecklistItem(String category, String productName, String brand, String needYn, String purchaseYn, String notes, Checklist checklist) {
+        this.category = category;
+        this.productName = productName;
+        this.brand = brand;
+        this.needYn = needYn;
+        this.purchaseYn = purchaseYn;
+        this.notes = notes;
+        this.checklist = checklist;
+    }
+
+    public void update(SaveChecklistItemDto item) {
+        this.category = item.getCategory();
+        this.productName = item.getProductName();
+        this.brand = item.getBrand();
+        this.needYn = item.getNeedYn();
+        this.purchaseYn = item.getPurchaseYn();
+        this.notes = item.getNotes();
+    }
 }

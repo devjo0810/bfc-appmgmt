@@ -53,22 +53,24 @@ public class ChecklistService {
 
     @Transactional
     public Long updateChecklist(String authKey, Long checklistId, String title) {
-        Member findMember = memberService.findByAuthKey(authKey);
-        Checklist findChecklist = checkListRepository.findById(checklistId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 체크리스트를 찾을 수 없습니다."));
-        validateChecklistOwner(findChecklist, findMember);
+        Checklist findChecklist = findChecklistAndValidateOwner(authKey, checklistId);
         findChecklist.updateTitle(title);
         return findChecklist.getId();
     }
 
     @Transactional
     public Long deleteChecklist(String authKey, Long checklistId) {
+        Checklist findChecklist = findChecklistAndValidateOwner(authKey, checklistId);
+        checkListRepository.delete(findChecklist);
+        return checklistId;
+    }
+
+    public Checklist findChecklistAndValidateOwner(String authKey, Long checklistId) {
         Member findMember = memberService.findByAuthKey(authKey);
         Checklist findChecklist = checkListRepository.findById(checklistId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 체크리스트를 찾을 수 없습니다."));
         validateChecklistOwner(findChecklist, findMember);
-        checkListRepository.deleteById(checklistId);
-        return checklistId;
+        return findChecklist;
     }
 
     private void validateChecklistOwner(Checklist findChecklist, Member findMember) {
