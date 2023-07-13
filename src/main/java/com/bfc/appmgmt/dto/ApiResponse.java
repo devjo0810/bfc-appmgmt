@@ -1,5 +1,6 @@
 package com.bfc.appmgmt.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,6 @@ import lombok.Data;
 @Builder
 public class ApiResponse {
     private Object contents;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Long count;
 }

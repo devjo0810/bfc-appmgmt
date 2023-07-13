@@ -2,9 +2,11 @@ package com.bfc.appmgmt.service;
 
 import com.bfc.appmgmt.api.checklist.ChecklistItemApiController;
 import com.bfc.appmgmt.api.checklist.dto.SaveChecklistItemDto;
+import com.bfc.appmgmt.api.checklist.dto.SearchChecklistItemDto;
 import com.bfc.appmgmt.domain.Checklist;
 import com.bfc.appmgmt.domain.ChecklistItem;
 import com.bfc.appmgmt.repository.ChecklistItemRepository;
+import com.bfc.appmgmt.repository.ChecklistItemSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,12 @@ import static com.bfc.appmgmt.api.checklist.ChecklistItemApiController.*;
 public class ChecklistItemService {
     private final ChecklistService checklistService;
     private final ChecklistItemRepository checklistItemRepository;
+    private final ChecklistItemSearchRepository checklistItemSearchRepository;
+
+    public List<SearchChecklistItemDto> search(String authKey, Long checklistId) {
+        checklistService.findChecklistAndValidateOwner(authKey, checklistId);
+        return checklistItemSearchRepository.search(checklistId);
+    }
 
     @Transactional
     public SaveChecklistItemsResponse saveItems(String authKey, Long checklistId, List<SaveChecklistItemDto> checklistItems) {

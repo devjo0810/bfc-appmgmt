@@ -1,4 +1,4 @@
-package com.bfc.appmgmt.dto;
+package com.bfc.appmgmt.api.checklist.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;

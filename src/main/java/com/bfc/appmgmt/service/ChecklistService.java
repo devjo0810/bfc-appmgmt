@@ -2,7 +2,7 @@ package com.bfc.appmgmt.service;
 
 import com.bfc.appmgmt.domain.Checklist;
 import com.bfc.appmgmt.domain.Member;
-import com.bfc.appmgmt.dto.SearchChecklistDto;
+import com.bfc.appmgmt.api.checklist.dto.SearchChecklistDto;
 import com.bfc.appmgmt.exception.UnauthorizedException;
 import com.bfc.appmgmt.repository.CheckListRepository;
 import com.bfc.appmgmt.repository.ChecklistSearchRepository;

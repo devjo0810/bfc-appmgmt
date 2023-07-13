@@ -15,7 +15,7 @@ import lombok.Data;
 @Builder
 public class ErrorResponse {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Object content;
+    private Object contents;
     private String message;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String code;

@@ -1,6 +1,7 @@
 package com.bfc.appmgmt.api.checklist;
 
 import com.bfc.appmgmt.api.checklist.dto.SaveChecklistItemDto;
+import com.bfc.appmgmt.api.checklist.dto.SearchChecklistItemDto;
 import com.bfc.appmgmt.dto.ApiResponse;
 import com.bfc.appmgmt.service.ChecklistItemService;
 import lombok.Builder;
@@ -27,7 +28,11 @@ public class ChecklistItemApiController {
     @GetMapping("/api/checklist/{checklistId}/items")
     public ApiResponse getChecklistItems(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
                                          @PathVariable(value = "checklistId") Long checklistId) {
-        return null;
+        List<SearchChecklistItemDto> searchItems = checklistItemService.search(authKey, checklistId);
+        return ApiResponse.builder()
+                .contents(searchItems)
+                .count(searchItems.stream().count())
+                .build();
     }
 
     @PostMapping("/api/checklist/{checklistId}/items")

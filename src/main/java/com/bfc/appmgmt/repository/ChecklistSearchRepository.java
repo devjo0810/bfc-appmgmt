@@ -1,10 +1,8 @@
 package com.bfc.appmgmt.repository;
 
+import com.bfc.appmgmt.api.checklist.dto.QSearchChecklistDto;
 import com.bfc.appmgmt.domain.Checklist;
-import com.bfc.appmgmt.domain.QChecklist;
-import com.bfc.appmgmt.domain.QChecklistItem;
-import com.bfc.appmgmt.dto.QSearchChecklistDto;
-import com.bfc.appmgmt.dto.SearchChecklistDto;
+import com.bfc.appmgmt.api.checklist.dto.SearchChecklistDto;
 import com.querydsl.jpa.JPAExpressions;
 import org.springframework.stereotype.Repository;
 
