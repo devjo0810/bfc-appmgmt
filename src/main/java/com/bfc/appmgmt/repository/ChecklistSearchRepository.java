@@ -34,7 +34,8 @@ public class ChecklistSearchRepository extends QuerydslRepositorySupport {
                 checklist.updatedAt.stringValue(),
                 JPAExpressions
                         .select(checklistItem.count())
-                        .from(checklistItem)))
+                        .from(checklistItem)
+                        .where(checklistItem.checklist.id.eq(checklist.id))))
                 .from(checklist)
                 .where(
                         checklist.member.id.eq(memberId)
