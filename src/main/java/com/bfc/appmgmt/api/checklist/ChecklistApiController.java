@@ -2,7 +2,6 @@ package com.bfc.appmgmt.api.checklist;
 
 import com.bfc.appmgmt.dto.ApiResponse;
 import com.bfc.appmgmt.service.ChecklistService;
-import com.bfc.appmgmt.util.HttpHeaderUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;

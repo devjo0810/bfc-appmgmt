@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface ChecklistItemRepository extends JpaRepository<ChecklistItem, Long> {
     List<ChecklistItem> findAllByIdIn(List<Long> ids);
+    List<ChecklistItem> findAllByIdInAndChecklistId(List<Long> ids, Long checklistId);
 }

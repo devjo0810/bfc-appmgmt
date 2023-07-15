@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.builder().message(e.getMessage()).build());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity exceptionHandler(IllegalArgumentException e) {
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.builder().message(e.getMessage()).build());
+    }
+
     @ExceptionHandler(PasswordNotMatchException.class)
     public ResponseEntity exceptionHandler(PasswordNotMatchException e) {
         return ResponseEntity.badRequest()
@@ -49,10 +56,16 @@ public class GlobalExceptionHandler {
                         .message(fieldError.getDefaultMessage()).build());
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity exceptionHandler(HttpMessageNotReadableException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.builder()
+                        .message("잘못된 형식의 값입니다.").build());
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity exceptionHandler(UnauthorizedException e) {
         return new ResponseEntity(ErrorResponse.builder().message(e.getMessage()).build(), HttpStatus.UNAUTHORIZED);
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                .body(ErrorResponse.builder().message(e.getMessage()));
     }
 }

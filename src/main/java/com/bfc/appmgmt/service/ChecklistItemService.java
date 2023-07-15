@@ -1,6 +1,5 @@
 package com.bfc.appmgmt.service;
 
-import com.bfc.appmgmt.api.checklist.ChecklistItemApiController;
 import com.bfc.appmgmt.api.checklist.dto.SaveChecklistItemDto;
 import com.bfc.appmgmt.api.checklist.dto.SearchChecklistItemDto;
 import com.bfc.appmgmt.domain.Checklist;
@@ -15,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.bfc.appmgmt.api.checklist.ChecklistItemApiController.*;
+import static com.bfc.appmgmt.api.checklist.ChecklistItemApiController.SaveChecklistItemsResponse;
 
 /**
  * packageName    : com.bfc.appmgmt.service
@@ -42,8 +41,32 @@ public class ChecklistItemService {
         Checklist findChecklist = checklistService.findChecklistAndValidateOwner(authKey, checklistId);
         return SaveChecklistItemsResponse.builder()
                 .createCount(createItems(findChecklist, checklistItems))
-                .updateCount(updateItems(checklistItems))
+                .updateCount(updateItems(checklistId, checklistItems))
                 .build();
+    }
+
+    @Transactional
+    public void deleteItem(String authKey, Long checklistId, Long itemId) {
+        checklistService.findChecklistAndValidateOwner(authKey, checklistId);
+        validateChecklistItemsInChecklist(List.of(itemId), checklistId);
+        ChecklistItem findChecklistItem = checklistItemRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException("찾을 수 없는 체크리스트 항목입니다."));
+        checklistItemRepository.delete(findChecklistItem);
+    }
+
+    @Transactional
+    public void deleteItems(String authKey, Long checklistId, List<Long> itemIds) {
+        checklistService.findChecklistAndValidateOwner(authKey, checklistId);
+        validateChecklistItemsInChecklist(itemIds, checklistId);
+        checklistItemRepository.deleteAllById(itemIds);
+    }
+
+    private void validateChecklistItemsInChecklist(List<Long> checklistItemIds, Long checklistId) {
+        int realCount = checklistItemRepository.findAllByIdInAndChecklistId(checklistItemIds, checklistId).size();
+        int requestCount = checklistItemIds.size();
+        if (realCount != requestCount) {
+            throw new IllegalArgumentException("처리할 수 없는 체크리스트 항목이 존재합니다.");
+        }
     }
 
     private int createItems(Checklist checklist, List<SaveChecklistItemDto> items) {
@@ -61,13 +84,14 @@ public class ChecklistItemService {
         findChecklistItem.update(item);
     }
 
-    private int updateItems(List<SaveChecklistItemDto> items) {
+    private int updateItems(Long checklistId, List<SaveChecklistItemDto> items) {
         List<SaveChecklistItemDto> updateItems = items.stream()
                 .filter(SaveChecklistItemDto::isUpdate)
                 .collect(Collectors.toList());
-        checklistItemRepository.findAllByIdIn(updateItems.stream()
-                .map(SaveChecklistItemDto::getChecklistItemId)
-                .collect(Collectors.toList()));
+        validateChecklistItemsInChecklist(
+                updateItems.stream().map(SaveChecklistItemDto::getChecklistItemId).collect(Collectors.toList()),
+                checklistId
+        );
         updateItems.forEach(item -> updateItem(item));
         return updateItems.size();
     }

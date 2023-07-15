@@ -47,7 +47,16 @@ public class ChecklistItemApiController {
     public ApiResponse deleteChecklistItem(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
                                            @PathVariable(value = "checklistId") Long checklistId,
                                            @PathVariable(value = "itemId") Long itemId) {
-        return null;
+        checklistItemService.deleteItem(authKey, checklistId, itemId);
+        return ApiResponse.builder().contents(itemId).build();
+    }
+
+    @DeleteMapping("/api/checklist/{checklistId}/items")
+    public ApiResponse deleteChecklistItems(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authKey,
+                                            @PathVariable(value = "checklistId") Long checklistId,
+                                            @RequestBody DeleteChecklistItemsRequest deleteChecklistItemsRequest) {
+        checklistItemService.deleteItems(authKey, checklistId, deleteChecklistItemsRequest.getItemIds());
+        return ApiResponse.builder().contents(deleteChecklistItemsRequest).build();
     }
 
     @Data
@@ -56,4 +65,10 @@ public class ChecklistItemApiController {
         private int createCount;
         private int updateCount;
     }
+
+    @Data
+    static class DeleteChecklistItemsRequest {
+        List<Long> itemIds;
+    }
+
 }
