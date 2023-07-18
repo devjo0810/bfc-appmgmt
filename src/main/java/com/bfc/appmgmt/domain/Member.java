@@ -14,12 +14,18 @@ import static com.bfc.appmgmt.api.auth.MeApiController.*;
  * date           : 2023/06/01
  * description    :
  */
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Entity
+@SequenceGenerator(
+        name = "MEMBER_SEQ_GENERATOR"
+        , sequenceName = "MEMBER_SEQ"
+        , initialValue = 1
+        , allocationSize = 1
+)
 public class Member extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
     @Column(name = "member_id")
     private Long id;
     private String username;

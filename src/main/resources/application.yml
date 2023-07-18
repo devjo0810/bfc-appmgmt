@@ -38,7 +38,7 @@ spring:
     url: ${BFC_DB_URL}
     username: ${BFC_DB_USERNAME}
     password: ${BFC_DB_PASSWORD}
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: oracle.jdbc.driver.OracleDriver
 
 logging:
   level:
@@ -70,7 +70,7 @@ spring:
     url: ${BFC_DB_URL}
     username: ${BFC_DB_USERNAME}
     password: ${BFC_DB_PASSWORD}
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: oracle.jdbc.driver.OracleDriver
 
 logging:
   level:

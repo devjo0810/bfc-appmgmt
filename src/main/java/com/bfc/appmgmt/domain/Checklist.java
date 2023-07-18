@@ -16,11 +16,17 @@ import java.util.List;
  * date           : 2023/06/01
  * description    :
  */
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@SequenceGenerator(
+        name = "CHECKLIST_SEQ_GENERATOR"
+        , sequenceName = "CHECKLIST_SEQ"
+        , initialValue = 1
+        , allocationSize = 1
+)
 public class Checklist extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKLIST_SEQ_GENERATOR")
     @Column(name = "checklist_id")
     private Long id;
     private String title;

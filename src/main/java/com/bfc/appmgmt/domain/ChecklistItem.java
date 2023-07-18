@@ -15,11 +15,17 @@ import javax.persistence.*;
  * date           : 2023/06/01
  * description    :
  */
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@SequenceGenerator(
+        name = "CHECKLIST_ITEM_SEQ_GENERATOR"
+        , sequenceName = "CHECKLIST_ITEM_SEQ"
+        , initialValue = 1
+        , allocationSize = 1
+)
 public class ChecklistItem extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKLIST_ITEM_SEQ_GENERATOR")
     @Column(name = "checklist_item_id")
     private Long id;
     private String category;
