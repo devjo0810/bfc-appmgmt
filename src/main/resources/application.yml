@@ -44,6 +44,10 @@ logging:
   level:
     org.hibernate.SQL: debug
 
+batch:
+  db-healthy:
+    cron: "0 0/1 * * * *"
+
 ---
 
 spring:
@@ -60,6 +64,10 @@ logging:
   level:
     org.hibernate.SQL: debug
 
+batch:
+  db-healthy:
+    cron: "0 0/1 * * * *"
+
 ---
 
 spring:
@@ -75,3 +83,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: info
+
+batch:
+  db-healthy:
+    cron: "0 0 0 * * *" # 매일 0시 0분 0초
