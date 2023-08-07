@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * packageName    : com.bfc.appmgmt.interceptor
@@ -21,9 +22,16 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
+    private final List<String> PASS_HTTP_METHODS = List.of("OPTIONS");
     private final SessionManager sessionManager;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String httpMethod = request.getMethod();
+        // auth 인증이 필요없는 http method 요청일 경우 패스
+        if (PASS_HTTP_METHODS.contains(httpMethod)) {
+            return true;
+        }
+
         String authKey = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         // api 요청시 header AUTHORIZATION 값 체크
