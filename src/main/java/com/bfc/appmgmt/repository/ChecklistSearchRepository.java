@@ -28,8 +28,8 @@ public class ChecklistSearchRepository extends QuerydslRepositorySupport {
         return select(new QSearchChecklistDto(
                 checklist.id,
                 checklist.title,
-                checklist.createdAt.stringValue(),
-                checklist.updatedAt.stringValue(),
+                checklist.createdAt,
+                checklist.updatedAt,
                 JPAExpressions
                         .select(checklistItem.count())
                         .from(checklistItem)

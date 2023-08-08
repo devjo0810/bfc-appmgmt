@@ -1,8 +1,11 @@
 package com.bfc.appmgmt.api.checklist.dto;
 
+import com.bfc.appmgmt.util.DateUtil;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.bfc.appmgmt.dto
@@ -21,11 +24,11 @@ public class SearchChecklistDto {
     private Long itemsCount;
 
     @QueryProjection
-    public SearchChecklistDto(Long checklistId, String title, String createdAt, String updatedAt, Long itemsCount) {
+    public SearchChecklistDto(Long checklistId, String title, LocalDateTime createdAt, LocalDateTime updatedAt, Long itemsCount) {
         this.checklistId = checklistId;
         this.title = title;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdAt = DateUtil.dateToString(createdAt);
+        this.updatedAt = DateUtil.dateToString(updatedAt);
         this.itemsCount = itemsCount;
     }
 }
